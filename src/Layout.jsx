@@ -76,32 +76,6 @@ const MainLayout = ({ children }) => {
   
   return (
 <>
-<Helmet>
-  <script type="application/ld+json">
-    {`
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Anes",
-        "url": "https://anesmd.com",
-        "sameAs": [
-          "https://www.linkedin.com/in/bentoumi-anes",
-          "https://github.com/snark_md",
-          "https://x.com/snark_md",
-          "https://facebook.com/bentoumiAnes",
-          "https://www.behance.net/snarkmd",
-          "https://medium.com/@benanes"
-        ],
-        "jobTitle": "Entrepreneur, Web Developer, Designer, medical doctor",
-        "worksFor": {
-          "@type": "Organization",
-          "name": "Hawks Creative Agency"
-        },
-        "image": "https://anesmd.com/img/anes.jpg"
-      }
-    `}
-  </script>
-</Helmet>
       {isPreloader && 
         
         <div ref={preloaderRef} className="flex justify-center items-center h-screen bg-dark text-light-200">
