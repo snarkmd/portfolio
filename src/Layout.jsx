@@ -70,8 +70,8 @@ const MainLayout = ({ children }) => {
     };
  
     const tl = gsap.timeline({delay:0.5})
-    tl.add(cubeAnim())
-    tl.add(scriptAnim())
+    //tl.add(cubeAnim())
+    //tl.add(scriptAnim())
     tl.add(layoutAnim())
   },[])
   
