@@ -22,14 +22,14 @@ const MainLayout = ({ children }) => {
     const preloader = preloaderRef.current
     const layout = layoutRef.current
     if (!preloader || !cubes || !scripts || !layout) return;
-    gsap.set(cubes,{opacity:0,y:60,filter: 'grayscale(0.3)'})
+    gsap.set(cubes,{opacity:0,y:60,scale:0.95,filter: 'grayscale(0.3)'})
     const cubeAnim = () => {
       const tl = gsap.timeline({
-        defaults: {duration: 0.45,ease:"power3.inOut"},
+        defaults: {duration: 0.45,ease:"power4.inOut"},
         onStart: () => cubes[0].parentNode.style.display = "grid",
         onComplete: () => cubes[0].parentNode.style.display = "none"
       })
-      tl.to(cubes, {opacity:1,y:0,duration:0.60,ease:"power3.inOut"})
+      tl.to(cubes, {opacity:1,y:0,scale:1,duration:0.60,ease:"power4.inOut"})
       tl.to(cubes[1], {y:30})
       tl.to(cubes[0], {x:30})
       tl.to(cubes[3], {y:-30})
@@ -37,22 +37,40 @@ const MainLayout = ({ children }) => {
       tl.to(cubes[5], {x:-30})
       tl.to(cubes[4], {x:30},"<")
       tl.to(cubes,{filter:'grayscale(0)',duration:0.3,ease:"expo.out"},">-=0.15")
-      tl.to(cubes,{opacity:0,duration:0.35,ease:"expo.in"},">+0.25")
+      tl.to(cubes,{opacity:0,duration:0.35,ease:"power4.out"},">+0.25")
       return tl;
     }
     const scriptAnim = () => {
-      const tl = gsap.timeline({defaults:{duration:1, ease:"power1.inOut"}, delay:0.4})
-      tl.fromTo(scripts[0],{opacity:0},{opacity:1,yoyo:true,repeat:1,
-        onStart: ()=> scripts[0].style.display = "block",
-        onComplete: () => scripts[0].style.display = "none"
-      })
-      tl.fromTo(scripts[1],{opacity:0},{opacity:1,
-        onStart: ()=> scripts[1].style.display = "block",
-      })
-      tl.to(scripts[1],{y:-180, duration:0.6, opacity:0, 
-        onComplete: () => scripts[1].style.display = "none"})
-      return tl;
-    }
+  const tl = gsap.timeline({ defaults: { ease: "power4.out",duration: 0.4, },delay:0.4 });
+
+  // Phrase 1: "Hello there,"
+  tl.fromTo(scripts[0],{ opacity: 0, y: 10, scale:0.95 },{opacity: 1, y: 0, scale:1, onStart: () => {scripts[0].style.display = "inline-block"; scripts[1].style.display = "inline-block"}});
+
+  // Slide "Hello there," to the right
+tl.to([scripts[0], scripts[1]], { x: -40 });
+
+  // Phrase 2: "wonderer" appears next to it
+  tl.fromTo(scripts[1],{ opacity: 0 },{opacity: 1 });
+
+  // Fade out both
+  tl.to([scripts[0], scripts[1]], {opacity: 0,delay:0.65,onComplete: () => {scripts[0].style.display = "none";scripts[1].style.display = "none";}});
+
+  // Phrase 3: "Get ready to"
+  tl.fromTo(scripts[2],{ opacity: 0, y: 10, scale:0.95 }, {opacity: 1,y: 0, scale:1, onStart: () => scripts[2].style.display = "inline-block"});
+
+  // Fade out
+  tl.to(scripts[2], {opacity: 0,delay:0.65, onComplete: () => scripts[2].style.display = "none"});
+
+  // Phrase 4: "explore the unexpected."
+  tl.fromTo(scripts[3],{ opacity: 0, y: 10, scale:0.95 },{opacity: 1,y: 0, scale:1, onStart: () => scripts[3].style.display = "inline-block"});
+
+  // Final fade out
+  tl.to(scripts[3], {opacity: 0,delay:0.65,onComplete: () => scripts[3].style.display = "none"});
+
+  return tl;
+};
+
+
     const layoutAnim = () => {
       const tl = gsap.timeline();
     
@@ -82,10 +100,12 @@ const MainLayout = ({ children }) => {
           <div className="hidden grid-flow-row grid-cols-3 overflow-hidden">
             {["blue","light-200","green","berry","transparent","red"].map((color,i)=>(<div key={i} ref={addCubeRefs} className={`bg-${color} w-[30px] h-[30px]`}/>))}
           </div>
-          <div >
-            <span ref={addScriptRefs} className="hidden">are you ready ?</span>
-            <span ref={addScriptRefs} className="hidden">Welcome</span>
-          </div>
+          <div className="inline-block whitespace-nowrap font-mono font-extralight text-lg">
+  <span ref={addScriptRefs} className="hidden mr-1">Hello there,</span>
+  <span ref={addScriptRefs} className="hidden italic">wonderer</span>
+  <span ref={addScriptRefs} className="hidden">Get ready to</span>
+  <span ref={addScriptRefs} className="hidden">explore the unexpected.</span>
+</div>
         </div>}
         
       <div ref={layoutRef} className={isPreloader ? "hidden":""}>
