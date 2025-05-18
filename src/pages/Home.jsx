@@ -5,7 +5,6 @@ import ReachMe from "./home/ReachMe";
 import Services from "./home/Services";
 import Skills from "./home/Skills";
 import { useEffect, useRef, useState } from "react";
-import { Helmet } from 'react-helmet-async';
 import { FloatMenu } from "../components/UI/FloatMenu";
 import { Element } from "react-scroll";
 import gsap from "gsap";
@@ -46,26 +45,6 @@ const Home = () => {
   }, [])
   return (
     <>
-          <Helmet>
-        <title>Anes | Creative Developer & Designer</title>
-        <meta name="description" content="Portfolio of Anes — web developer, designer, and entrepreneur. Explore my projects and creative work." />
-        <meta name="keywords" content="Anes, portfolio, web developer, designer, creative, frontend, entrepreneur" />
-        <meta name="author" content="Anes" />
-
-        {/* Open Graph for Facebook & LinkedIn */}
-        <meta property="og:title" content="Anes | Creative Developer & Designer" />
-        <meta property="og:description" content="Explore the portfolio of Anes — full of design, code, and creative ideas." />
-        <meta property="og:image" content="https://anesmd.com/img/preview.png" />
-        <meta property="og:url" content="https://anesmd.com" />
-        <meta property="og:type" content="website" />
-
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Anes | Creative Developer & Designer" />
-        <meta name="twitter:description" content="Explore the portfolio of Anes — full of design, code, and creative ideas." />
-        <meta name="twitter:image" content="https://anesmd.com/img/preview.png" />
-      </Helmet>
-    
         <div>
           <FloatMenu floatRef={floatRef} currentSection={currentSection}/>
           <Hero />

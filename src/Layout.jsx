@@ -5,7 +5,6 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Menu from "./components/UI/Menu";
 import { useMenu } from "./context/MenuProvider";
-import { Helmet } from 'react-helmet-async';
 const MainLayout = ({ children }) => {
   const { isMenuOpen } = useMenu();
   const location = useLocation();
@@ -70,8 +69,8 @@ const MainLayout = ({ children }) => {
     };
  
     const tl = gsap.timeline({delay:0.5})
-    //tl.add(cubeAnim())
-    //tl.add(scriptAnim())
+    tl.add(cubeAnim())
+    tl.add(scriptAnim())
     tl.add(layoutAnim())
   },[])
   

@@ -4,11 +4,9 @@ import { Routes, Route } from "react-router-dom";
 import MainLayout from "./Layout";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import { HelmetProvider } from 'react-helmet-async';
 function App() {
   return (
     <Router>
-      <HelmetProvider>
       <AppProvider>
         <Routes>
           <Route
@@ -29,7 +27,6 @@ function App() {
           />
         </Routes>
       </AppProvider>
-      </HelmetProvider>
     </Router>
   );
 }
