@@ -5,7 +5,7 @@ import ReachMe from "./home/ReachMe";
 import Services from "./home/Services";
 import Skills from "./home/Skills";
 import { useEffect, useRef, useState } from "react";
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { FloatMenu } from "../components/UI/FloatMenu";
 import { Element } from "react-scroll";
 import gsap from "gsap";
@@ -55,7 +55,7 @@ const Home = () => {
         {/* Open Graph for Facebook & LinkedIn */}
         <meta property="og:title" content="Anes | Creative Developer & Designer" />
         <meta property="og:description" content="Explore the portfolio of Anes — full of design, code, and creative ideas." />
-        <meta property="og:image" content="/img/preview_facebook.jpg" />
+        <meta property="og:image" content="https://anesmd.com/img/preview.png" />
         <meta property="og:url" content="https://anesmd.com" />
         <meta property="og:type" content="website" />
 
@@ -63,7 +63,7 @@ const Home = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Anes | Creative Developer & Designer" />
         <meta name="twitter:description" content="Explore the portfolio of Anes — full of design, code, and creative ideas." />
-        <meta name="twitter:image" content="/img/preview_twitter.jpg" />
+        <meta name="twitter:image" content="https://anesmd.com/img/preview.png" />
       </Helmet>
     
         <div>
