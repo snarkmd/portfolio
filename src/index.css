@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import "tailwindcss";
+/*@layer theme, base, components, utilities;
+/* Keyframes */
+
+@keyframes spinOne {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes subtlePulse {
+  0%,
+  100% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.035);
+  }
+}
+
+@keyframes subtleBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-5px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  70% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes autoplayProgress {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+@theme {
+  /* Colors */
+  --color-blue: #536ca3;
+  --color-red: #b43820;
+  --color-green: #c4ce0e;
+  --color-berry: #975767;
+  --color-dark: #312c31;
+  --color-light-100: #f7f7fb;
+  --color-light-200: #e3e6f0;
+
+  /* Font Families */
+  --font-mono: "Space Mono", monospace;
+  --font-serif: "Roxboroughcf", Georgia, serif;
+  --font-sans: "Geist", Helvetica, Arial, sans-serif;
+
+  /* Spacing */
+  --spacing-13: 3.25rem;
+  --spacing-15: 3.75rem;
+  --spacing-128: 32rem;
+
+  /* Apply Animations */
+  --animation-spinOne: spinOne 500ms ease-out;
+  --animation-subtlePulse: subtlePulse 3s ease-in-out infinite;
+  --animation-subtleBounce: subtleBounce 1.5s ease-in-out infinite;
+  --animation-autoplayProgress: autoplayProgress linear forwards;
+}
+
+@font-face {
+  font-family: "Roxboroughcf";
+  src: url("/fonts/RoxboroughCF-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roxboroughcf";
+  src: url("/fonts/RoxboroughCF-RegularItalic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@layer utilities {
+  .grain::before {
+    content: "";
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 50px;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .custom-touch {
+    touch-action: pan-y pinch-zoom;
+  }
+}
+
+.box {
+  @apply relative w-10 h-10 flex justify-center items-center text-sm cursor-pointer;
+}
+
+.hoverScale {
+  @apply transition-all ease-in-out duration-300 hover:scale-105;
+}
+.sticker {
+  @apply inline-block align-baseline mx-1;
+}
+
+.highlight {
+  @apply col-span-1 bg-white h-2/5 aspect-[9/16] rounded-lg overflow-hidden;
+}
+.text-symbol {
+  @apply inline-block align-middle size-4 border border-dark rounded-full;
+}
+*{
+  user-select: none;
+  -webkit-user-select: none; /* For Safari */
+  -moz-user-select: none;    /* For Firefox */
+  -ms-user-select: none;
+}
