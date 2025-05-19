@@ -1,10 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { gsap } from "gsap";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Menu from "./components/UI/Menu";
 import { useMenu } from "./context/MenuProvider";
+
+import { gsap } from "gsap";
+import { SplitText } from "gsap/SplitText";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+
+gsap.registerPlugin(SplitText, ScrambleTextPlugin);
+
 const MainLayout = ({ children }) => {
   const { isMenuOpen } = useMenu();
   const location = useLocation();
@@ -41,35 +47,41 @@ const MainLayout = ({ children }) => {
       return tl;
     }
     const scriptAnim = () => {
-  const tl = gsap.timeline({ defaults: { ease: "power4.out",duration: 0.4, },delay:0.4 });
+  const tl = gsap.timeline({ defaults: {ease: "power4.out",duration: 0.4,}, delay: 0.4, });
 
-  // Phrase 1: "Hello there,"
-  tl.fromTo(scripts[0],{ opacity: 0, y: 10, scale:0.95 },{opacity: 1, y: 0, scale:1, onStart: () => {scripts[0].style.display = "inline-block"; scripts[1].style.display = "inline-block"}});
+  // SplitText initialization
+  const split1 = new SplitText(scripts[0], { type: "chars" });
+  const split2 = new SplitText(scripts[1], { type: "chars" });
+  const split3 = new SplitText(scripts[2], { type: "chars" });
+  const split4 = new SplitText(scripts[3], { type: "chars" });
 
-  // Slide "Hello there," to the right
-tl.to([scripts[0], scripts[1]], { x: -40 });
+  // === Phrase 1: "Hello there," ===
+  scripts[0].style.display = "inline-block";
+  scripts[1].style.display = "inline-block";
 
-  // Phrase 2: "wonderer" appears next to it
-  tl.fromTo(scripts[1],{ opacity: 0 },{opacity: 1 });
+  tl.from(split1.chars, { opacity: 0, y: 10, scale: 0.95, stagger: 0.04, });
+  tl.to(scripts[0], { x: "-150%" });
 
-  // Fade out both
-  tl.to([scripts[0], scripts[1]], {opacity: 0,delay:0.65,onComplete: () => {scripts[0].style.display = "none";scripts[1].style.display = "none";}});
+  // === Phrase 2: "wonderer" with scramble effect ===
+  tl.fromTo( scripts[1], { opacity: 0 }, { opacity: 1, duration: 0.4, onStart: () => { gsap.to(scripts[1], { duration: 1.2, scrambleText: { text: "wonderer", chars: "upperAndLowerCase", revealDelay: 0.3, speed: 0.4, }, }); }, } );
 
-  // Phrase 3: "Get ready to"
-  tl.fromTo(scripts[2],{ opacity: 0, y: 10, scale:0.95 }, {opacity: 1,y: 0, scale:1, onStart: () => scripts[2].style.display = "inline-block"});
+  // Fade out Phrase 1 & 2
+  tl.to([scripts[0], scripts[1]], { opacity: 0, delay: 1.25, onComplete: () => { scripts[0].style.display = "none"; scripts[1].style.display = "none"; }, });
 
-  // Fade out
-  tl.to(scripts[2], {opacity: 0,delay:0.65, onComplete: () => scripts[2].style.display = "none"});
+  // === Phrase 3: "Get ready to" ===
+  scripts[2].style.display = "inline-block";
 
-  // Phrase 4: "explore the unexpected."
-  tl.fromTo(scripts[3],{ opacity: 0, y: 10, scale:0.95 },{opacity: 1,y: 0, scale:1, onStart: () => scripts[3].style.display = "inline-block"});
+  tl.from(split3.chars, { opacity: 0, y: 10, scale: 0.95, stagger: 0.03, }); 
+  tl.to(scripts[2], { opacity: 0, delay: 0.65, onComplete: () => { scripts[2].style.display = "none"; }, });
 
-  // Final fade out
-  tl.to(scripts[3], {opacity: 0,delay:0.65,onComplete: () => scripts[3].style.display = "none"});
+  // === Phrase 4: "explore the unexpected." ===
+  scripts[3].style.display = "inline-block";
+
+  tl.from(split4.chars, { opacity: 0, y: 10, scale: 0.95, stagger: 0.03, }); 
+  tl.to(scripts[3], { opacity: 0, delay: 0.65, onComplete: () => { scripts[3].style.display = "none"; }, });
 
   return tl;
 };
-
 
     const layoutAnim = () => {
       const tl = gsap.timeline();
@@ -97,15 +109,27 @@ tl.to([scripts[0], scripts[1]], { x: -40 });
       {isPreloader && 
         
         <div ref={preloaderRef} className="flex justify-center items-center h-screen bg-dark text-light-200">
-          <div className="hidden grid-flow-row grid-cols-3 overflow-hidden">
+          <div className="hidden grid-flow-row grid-cols-3 overflow-hidden absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
             {["blue","light-200","green","berry","transparent","red"].map((color,i)=>(<div key={i} ref={addCubeRefs} className={`bg-${color} w-[30px] h-[30px]`}/>))}
           </div>
-          <div className="inline-block whitespace-nowrap font-mono font-extralight text-lg">
-  <span ref={addScriptRefs} className="hidden mr-1">Hello there,</span>
-  <span ref={addScriptRefs} className="hidden italic">wonderer</span>
-  <span ref={addScriptRefs} className="hidden">Get ready to</span>
-  <span ref={addScriptRefs} className="hidden">explore the unexpected.</span>
+          <div className="relative w-full h-[120px]">
+  <span ref={addScriptRefs} className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+    Hello there,
+  </span>
+
+  <span ref={addScriptRefs} className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden italic">
+    wonderer
+  </span>
+
+  <span ref={addScriptRefs} className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+    Get ready to
+  </span>
+
+  <span ref={addScriptRefs} className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+    explore the unexpected.
+  </span>
 </div>
+
         </div>}
         
       <div ref={layoutRef} className={isPreloader ? "hidden":""}>

@@ -94,7 +94,7 @@ const Footer = () => {
         <select
           value={purpose}
           onChange={(e) => setPurpose(e.target.value)}
-          className="bg-transparent border-b border-transparent focus:outline-none px-1 w-56"
+          className="bg-transparent border-b border-dark focus:outline-none px-1 w-40"
         >
           <option value="">-- select --</option>
           {purposes.map((p) => (
