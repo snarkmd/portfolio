@@ -59,7 +59,7 @@ const MainLayout = ({ children }) => {
   scripts[0].style.display = "inline-block";
   scripts[1].style.display = "inline-block";
 
-  tl.from(split1.chars, { opacity: 0, y: 10, scale: 0.95, stagger: 0.04, });
+  tl.from(split1.chars, { opacity: 0, y: 4, scale: 0.95, stagger: 0.02 });
   tl.to(scripts[0], { x: "-150%" });
 
   // === Phrase 2: "wonderer" with scramble effect ===
@@ -71,13 +71,13 @@ const MainLayout = ({ children }) => {
   // === Phrase 3: "Get ready to" ===
   scripts[2].style.display = "inline-block";
 
-  tl.from(split3.chars, { opacity: 0, y: 10, scale: 0.95, stagger: 0.03, }); 
+  tl.from(split3.chars, { opacity: 0, y: 4, scale: 0.95, stagger: 0.02, }); 
   tl.to(scripts[2], { opacity: 0, delay: 0.65, onComplete: () => { scripts[2].style.display = "none"; }, });
 
   // === Phrase 4: "explore the unexpected." ===
   scripts[3].style.display = "inline-block";
 
-  tl.from(split4.chars, { opacity: 0, y: 10, scale: 0.95, stagger: 0.03, }); 
+  tl.from(split4.chars, { opacity: 0, y: 4, scale: 0.95, stagger: 0.02, }); 
   tl.to(scripts[3], { opacity: 0, delay: 0.65, onComplete: () => { scripts[3].style.display = "none"; }, });
 
   return tl;
@@ -94,12 +94,13 @@ const MainLayout = ({ children }) => {
       });
     
       tl.to( layout,{display: "initial"},"-=0.4" );
+      tl.eventCallback("onComplete", () =>  window.dispatchEvent(new CustomEvent('preloaderComplete')));
     
       return tl;
     };
  
     const tl = gsap.timeline({delay:0.5})
-    tl.add(cubeAnim())
+    //tl.add(cubeAnim())
     tl.add(scriptAnim())
     tl.add(layoutAnim())
   },[])

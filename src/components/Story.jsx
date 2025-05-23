@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { stories } from "../assets/data";
 
 const Story = ({ showStories }) => {
+  console.log("hello")
     const containerRef = useRef()
     useEffect(() =>{
       const container = containerRef.current;
@@ -77,13 +78,13 @@ progressRefs.current[childSwiper.activeIndex].style.setProperty(
         <X className="size-8 md:size-10" />
       </button>
       <button
-        className="absolute z-50 md:left-[calc(50%-202px)] p-2 bg-light-200 bg-opacity-40 rounded-full text-dark hidden md:flex hover:bg-opacity-60"
+        className="absolute z-50 md:left-[calc(50%-202px)] p-2 bg-light-200 bg-opacity-40 rounded-full text-dark hidden md:flex hover:bg-opacity-60 cursor-pointer"
         onClick={handlePrev}
       >
         <ChevronLeft size={20} />
       </button>
       <button
-        className="absolute z-50 md:right-[calc(50%-202px)] p-2 bg-light-200 bg-opacity-40 rounded-full text-dark hidden md:flex hover:bg-opacity-60"
+        className="absolute z-50 md:right-[calc(50%-202px)] p-2 bg-light-200 bg-opacity-40 rounded-full text-dark hidden md:flex hover:bg-opacity-60 cursor-pointer"
         onClick={handleNext}
       >
         <ChevronRight size={20} />

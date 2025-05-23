@@ -39,18 +39,24 @@ useEffect(() => {
     return () => clearInterval(interval);
   });
   const heroTextRef = useRef(null)
-  useEffect(() => {
-  if (typeof window === "undefined") return;
 
+
+useEffect(() => {
+  if (typeof window === "undefined") return;
   const heroText = heroTextRef.current;
   if (!heroText) return;
 
   let split;
+  let animation;
 
-  const runAnimation = () => {
+  const handlePreloaderComplete = () => {
+    // Clean up any previous instances (just in case)
+    if (animation) animation.kill();
+    if (split) split.revert();
+
     split = new SplitText(heroText, { type: "lines" });
-
-    gsap.from(split.lines, {
+     heroText.style.display = "block";
+    animation = gsap.from(split.lines, {
       rotationX: -50,
       scale: 0.95,
       transformOrigin: "50% 50% -120px",
@@ -58,28 +64,23 @@ useEffect(() => {
       duration: 0.8,
       ease: "power4.inOut",
       stagger: 0.15,
-      
-
     });
   };
 
-  // Wait for fonts to load, layout to settle
-  document.fonts.ready.then(() => {
-    setTimeout(() => {
-      runAnimation();
-    }, 50); // slight delay for layout and image rendering
-  });
-
+  window.addEventListener('preloaderComplete', handlePreloaderComplete);
+  
+  // Cleanup function
   return () => {
+    window.removeEventListener('preloaderComplete', handlePreloaderComplete);
+    if (animation) animation.kill();
     if (split) split.revert();
   };
 }, []);
-
   return (
     <>
       {stories && <Story showStories={showStories} />}
       <div className="!py-0 px-8 md:px-16 md:py-8 md:min-h-[calc(100vh-80px)] min-h-[calc(100vh-60px)] flex flex-col items-center gap-1">
-        <p ref={heroTextRef} className="whitespace-normal font-serif md:max-w-[900px] text-4xl md:text-7xl lg:8xl md:leading-[5rem] m-auto font-extralight leading-snug text-center">
+        <p ref={heroTextRef} className="whitespace-normal hidden font-serif md:max-w-[900px] text-4xl md:text-7xl lg:8xl md:leading-[5rem] m-auto font-extralight leading-snug text-center">
           Small-<em>town</em>{" "}
           <img
             src={mairie}
@@ -88,7 +89,7 @@ useEffect(() => {
           />{" "}
           millennial, shaped by what I do
           <span
-            onClick={() => showStories(true)}
+            onClick={() => showStories(false)}
             className="sticker hoverScale w-24 h-10 md:w-28 md:h-14 bg-blue relative cursor-pointer bg-cover bg-center bg-opacity-50 bg-blend-overlay grain"
             style={{ backgroundImage: `url(${gif})` }}
           >
@@ -96,7 +97,7 @@ useEffect(() => {
             <Eye
               size={24}
               strokeWidth={2.5}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-light-100"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-light-100 pointer-events-none"
             />{" "}
           </span>
           , create{" "}
