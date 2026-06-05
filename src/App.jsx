@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import MainLayout from "./Layout";
 import Home from "./pages/Home";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
 import WhoAmI from "./pages/WhoAmI";
 
@@ -34,6 +35,14 @@ function App() {
             element={
               <MainLayout>
                 <Blog />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/blog/:slug"
+            element={
+              <MainLayout>
+                <BlogPost />
               </MainLayout>
             }
           />
