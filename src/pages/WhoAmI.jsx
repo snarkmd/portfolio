@@ -8,6 +8,8 @@ import {
   ListMusic,
   MapPinned,
   Sparkles,
+  Cat,
+  FlaskConical,
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -21,7 +23,7 @@ const directory = [
   { label: "Movies", target: "movies", icon: Film },
   { label: "Playlist", target: "playlist", icon: ListMusic },
   { label: "Manga / Anime", target: "manga-anime", icon: BookOpen },
-  { label: "Adventure log", target: "adventures", icon: Compass },
+  { label: "Field notes", target: "adventures", icon: Compass },
   { label: "Rituals", target: "rituals", icon: Coffee },
 ];
 
@@ -29,95 +31,131 @@ const movieShelf = [
   {
     title: "Perfect Days",
     year: "2023",
-    mood: "quiet routine",
-    note: "For days when small rituals feel more honest than big speeches.",
+    mood: "quiet dignity",
+    note: "A man who cleans toilets for a living is more at peace than everyone around him. The movie doesn't explain why. That's the whole point.",
+    imdb: "https://www.imdb.com/title/tt27503384/",
   },
   {
     title: "The Grand Budapest Hotel",
     year: "2014",
-    mood: "orderly chaos",
-    note: "For composition, timing, color, and the joy of being slightly absurd.",
+    mood: "controlled absurdity",
+    note: "Proof that style is not the opposite of substance. Also that people will do extraordinary things for pastry.",
+    imdb: "https://www.imdb.com/title/tt2278388/",
   },
   {
     title: "Arrival",
     year: "2016",
-    mood: "language and grief",
-    note: "For anyone who thinks communication is one of the deepest human problems.",
+    mood: "language, time, grief",
+    note: "The only sci-fi film I've seen where the alien problem is actually a linguistics problem. House would hate it. I love it.",
+    imdb: "https://www.imdb.com/title/tt2543164/",
   },
   {
     title: "Spirited Away",
     year: "2001",
-    mood: "wonder with teeth",
-    note: "For the part of me that still likes strange worlds with real emotional rules.",
+    mood: "earn your way back",
+    note: "A kid falls into a spirit economy and has to work for it. No chosen one arc. No special powers. Just work, attention, and not forgetting who you are.",
+    imdb: "https://www.imdb.com/title/tt0245429/",
+  },
+  {
+    title: "12 Angry Men",
+    year: "1957",
+    mood: "one room, twelve egos",
+    note: "Every character is wrong about something. Every character is also right about something. A masterclass in how conviction and reasoning are not the same thing.",
+    imdb: "https://www.imdb.com/title/tt0050083/",
   },
 ];
 
 const playlistNotes = [
   {
-    label: "late work",
-    text: "slow tracks, clean loops, music that leaves room for thinking",
+    label: "3am build",
+    text: "something that sounds like focus but doesn't demand you listen to it",
   },
   {
-    label: "city walk",
-    text: "songs with texture, rhythm, and enough warmth to make streets feel edited",
+    label: "city noise",
+    text: "tracks with texture — like the street outside has a decent sound designer",
   },
   {
     label: "reset",
-    text: "soft vocals, familiar melodies, nothing trying too hard",
+    text: "nothing clever. familiar. the musical equivalent of chamomile.",
   },
 ];
 
 const mangaAnimeTrivia = [
   {
-    prompt: "Favorite kind of character",
-    answer: "the quiet strategist who notices everything before speaking",
+    prompt: "Character I always root for",
+    answer:
+      "the one who figured out the rules of the world three episodes ago and is waiting for everyone else to catch up",
   },
   {
-    prompt: "Trope weakness",
-    answer: "found family, training arcs, mentors with suspiciously good advice",
+    prompt: "Trope I cannot resist",
+    answer:
+      "found family that argues constantly but shows up when it actually matters. every time. no exceptions.",
   },
   {
-    prompt: "Instant attention",
-    answer: "worldbuilding with rules, maps, guilds, rituals, or weird food",
+    prompt: "What makes me pick up a new series",
+    answer:
+      "a system with internal logic. guilds, magic rules, power hierarchies — if the world has consistent rules I will read the wiki before finishing episode 2",
   },
   {
-    prompt: "Anime comfort zone",
-    answer: "Ghibli tenderness, slice-of-life calm, and stories where kindness is not naive",
+    prompt: "Comfort zone",
+    answer:
+      "Ghibli pacing. stories where the stakes are real but nobody has to be evil for things to go wrong",
   },
   {
-    prompt: "Manga shelf energy",
-    answer: "curiosity first: panels, pacing, expressions, and how a page teaches your eye to move",
+    prompt: "What I actually look at in manga",
+    answer:
+      "panel composition and how silence is used. some mangaka can make you feel dread with an empty corridor. that's more impressive than any fight scene.",
   },
 ];
 
 const adventureLog = [
   {
     place: "old streets",
-    stamp: "walk",
-    story: "I like places that look used by time. Doors, signs, tiles, noise, small shops, and details nobody designed for Instagram.",
+    stamp: "observation",
+    story:
+      "I trust a city that looks used. Paint that didn't survive winter. Doors that were repainted twice. Signs in three fonts. The Instagram version of a city is a city that fired its memory.",
   },
   {
-    place: "hospital corridors",
-    stamp: "training",
-    story: "Medicine teaches you that people are never just one thing. Every room has fear, humor, fatigue, and dignity in it.",
+    place: "clinic hallways",
+    stamp: "sleep medicine",
+    story:
+      "People arrive pretending they slept fine. The polygraph says otherwise. Medicine is the only field where lying to yourself shows up as data.",
+  },
+  {
+    place: "2am terminal",
+    stamp: "building",
+    story:
+      "The best code I've written happened when I stopped caring about best practices and started caring about the actual problem. The two are related but not the same.",
   },
   {
     place: "workshop rooms",
     stamp: "teaching",
-    story: "My favorite teaching moments are when someone stops copying and starts making their own decisions.",
-  },
-  {
-    place: "late desk",
-    stamp: "making",
-    story: "Most ideas arrive as messy notes. The real work is turning that chaos into something another person can enter.",
+    story:
+      "You know someone actually learned something when they stop asking 'is this right' and start asking 'what if I tried this instead.' Takes longer than expected. Worth it every time.",
   },
 ];
 
 const rituals = [
-  { icon: Coffee, label: "drink", value: "mint tea for comfort, coffee for deadlines" },
-  { icon: Headphones, label: "sound", value: "background music that does not steal the room" },
-  { icon: MapPinned, label: "collect", value: "street textures, overheard phrases, screenshots, names" },
-  { icon: Sparkles, label: "small joy", value: "finding one detail that makes the whole thing click" },
+  {
+    icon: Coffee,
+    label: "before midnight",
+    value: "tea or chamomile. the kind of drink that doesn't pretend to do anything.",
+  },
+  {
+    icon: FlaskConical,
+    label: "after midnight",
+    value: "coffee. non-negotiable. the night shift has terms.",
+  },
+  {
+    icon: Cat,
+    label: "decompression",
+    value: "petting a cat. not metaphorically. actual cat. actual silence.",
+  },
+  {
+    icon: Sparkles,
+    label: "small win",
+    value: "when one fix makes three other problems disappear. rare. unforgettable.",
+  },
 ];
 
 const WhoAmI = () => {
@@ -164,25 +202,27 @@ const WhoAmI = () => {
 
   return (
     <div ref={rootRef} className="bg-light-100 text-dark">
+      {/* HEADER */}
       <section className="px-8 md:px-16 pt-12 pb-10 md:pt-16 md:pb-14 border-b-2 border-dark">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.7fr] gap-10 items-end">
           <div>
             <p className="whoami-entry font-mono text-xs mb-4">
-              WHO AM I / PERSONAL DIRECTORY
+              WHO AM I / PERSONAL INDEX
             </p>
             <h1 className="whoami-entry font-serif text-5xl md:text-8xl leading-[0.95] max-w-5xl">
-              Shelves, tabs, notes, and tiny proofs of taste.
+              Things I'd tell you if I actually had time to explain myself.
             </h1>
           </div>
 
           <p className="whoami-entry font-sans text-base md:text-lg max-w-xl lg:justify-self-end">
-            Less biography, more browsing. This is a living index of movies,
-            songs, manga/anime trivia, small rituals, and stories I keep coming
-            back to.
+            Not a bio. More like evidence. Films, songs, anime instincts, field
+            notes, and the small rituals that prove I'm at least trying to be a
+            functional person.
           </p>
         </div>
       </section>
 
+      {/* STICKY NAV */}
       <nav className="sticky top-0 z-30 bg-light-100 border-b-2 border-dark overflow-x-auto">
         <ul className="flex min-w-max px-8 md:px-16">
           {directory.map((item, index) => {
@@ -205,6 +245,7 @@ const WhoAmI = () => {
       </nav>
 
       <main>
+        {/* MOVIES */}
         <section
           id="movies"
           className="px-8 md:px-16 py-14 md:py-20 border-b-2 border-dark"
@@ -213,51 +254,57 @@ const WhoAmI = () => {
             <div>
               <p className="font-mono text-xs mb-3">01 / MOVIE SHELF</p>
               <h2 className="font-serif text-4xl md:text-6xl leading-tight">
-                Films I would hand someone before overexplaining myself.
+                Films I'd hand you instead of answering a personal question.
               </h2>
+              <p className="font-sans text-sm mt-4 max-w-xs text-dark/60">
+                Click the title to open on IMDB.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-[1fr_0.8fr] gap-6">
               <div className="border-y-2 border-dark divide-y-2 divide-dark">
                 {movieShelf.map((movie, index) => (
-                  <button
+                  <div
                     key={movie.title}
-                    type="button"
                     onMouseEnter={() => setActiveMovie(index)}
                     onFocus={() => setActiveMovie(index)}
-                    onClick={() => setActiveMovie(index)}
                     className={`w-full text-left py-4 flex items-center justify-between gap-4 transition-colors ${
                       activeMovie === index ? "bg-light-200" : "hover:bg-light-200"
                     }`}
                   >
-                    <span className="px-3">
-                      <span className="font-mono text-xs mr-3">
-                        {movie.year}
-                      </span>
-                      <span className="font-serif text-3xl md:text-4xl">
+                    <span className="px-3 flex items-center gap-3">
+                      <span className="font-mono text-xs">{movie.year}</span>
+                      <a
+                        href={movie.imdb}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setActiveMovie(index)}
+                        className="font-serif text-2xl md:text-3xl hover:underline underline-offset-4"
+                      >
                         {movie.title}
-                      </span>
+                      </a>
                     </span>
-                    <span className="font-mono text-xs px-3 hidden sm:block">
+                    <span className="font-mono text-xs px-3 hidden sm:block text-dark/50">
                       {movie.mood}
                     </span>
-                  </button>
+                  </div>
                 ))}
               </div>
 
               <div className="min-h-72 border-2 border-dark bg-berry p-5 flex flex-col justify-between">
                 <Film className="size-9" />
-                <p className="font-serif text-3xl leading-tight">
+                <p className="font-serif text-2xl md:text-3xl leading-tight">
                   {movieShelf[activeMovie].note}
                 </p>
-                <p className="font-mono text-xs">
-                  selected / {movieShelf[activeMovie].title}
+                <p className="font-mono text-xs opacity-60">
+                  {movieShelf[activeMovie].title} · {movieShelf[activeMovie].year}
                 </p>
               </div>
             </div>
           </div>
         </section>
 
+        {/* PLAYLIST */}
         <section
           id="playlist"
           className="px-8 md:px-16 py-14 md:py-20 border-b-2 border-dark bg-dark text-light-200"
@@ -266,11 +313,11 @@ const WhoAmI = () => {
             <div>
               <p className="font-mono text-xs mb-3">02 / PLAYLIST</p>
               <h2 className="font-serif text-4xl md:text-6xl leading-tight">
-                The soundtrack shelf.
+                Music I use as infrastructure.
               </h2>
-              <p className="font-sans text-sm max-w-md mt-5">
-                A Spotify slot for whatever playlist currently feels most like
-                the room. The embed URL lives at the top of this file.
+              <p className="font-sans text-sm max-w-md mt-5 text-light-200/60">
+                Not background noise. Not foreground noise either. Something
+                in between that gets out of the way.
               </p>
             </div>
 
@@ -291,7 +338,9 @@ const WhoAmI = () => {
                     <p className="font-mono text-xs text-green">
                       {String(index + 1).padStart(2, "0")} / {note.label}
                     </p>
-                    <p className="font-serif text-2xl mt-3">{note.text}</p>
+                    <p className="font-serif text-xl md:text-2xl mt-3 leading-snug">
+                      {note.text}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -299,16 +348,21 @@ const WhoAmI = () => {
           </div>
         </section>
 
+        {/* MANGA / ANIME */}
         <section
           id="manga-anime"
           className="px-8 md:px-16 py-14 md:py-20 border-b-2 border-dark"
         >
           <div className="whoami-reveal grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-8">
             <div>
-              <p className="font-mono text-xs mb-3">03 / MANGA + ANIME TRIVIA</p>
+              <p className="font-mono text-xs mb-3">03 / MANGA + ANIME</p>
               <h2 className="font-serif text-4xl md:text-6xl leading-tight">
                 Not rankings. More like tells.
               </h2>
+              <p className="font-sans text-sm max-w-xs mt-4 text-dark/60">
+                What you like is fine. How you talk about what you like is the
+                actual data.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-[0.75fr_1.25fr] gap-5">
@@ -331,25 +385,26 @@ const WhoAmI = () => {
 
               <div className="min-h-80 border-2 border-dark bg-light-200 p-6 flex flex-col justify-between">
                 <BookOpen className="size-9" />
-                <p className="font-serif text-4xl md:text-5xl leading-tight">
+                <p className="font-serif text-3xl md:text-4xl leading-tight">
                   {mangaAnimeTrivia[activeTrivia].answer}
                 </p>
-                <p className="font-mono text-xs">
-                  trivia / {mangaAnimeTrivia[activeTrivia].prompt}
+                <p className="font-mono text-xs text-dark/50">
+                  {mangaAnimeTrivia[activeTrivia].prompt}
                 </p>
               </div>
             </div>
           </div>
         </section>
 
+        {/* FIELD NOTES */}
         <section
           id="adventures"
           className="px-8 md:px-16 py-14 md:py-20 border-b-2 border-dark"
         >
           <div className="whoami-reveal">
-            <p className="font-mono text-xs mb-3">04 / SHORT ADVENTURES</p>
+            <p className="font-mono text-xs mb-3">04 / FIELD NOTES</p>
             <h2 className="font-serif text-4xl md:text-6xl leading-tight max-w-4xl">
-              Small field notes from places that shaped my eye.
+              Places and situations that left a mark on how I think.
             </h2>
           </div>
 
@@ -364,20 +419,23 @@ const WhoAmI = () => {
                 </p>
                 <div>
                   <p className="font-serif text-3xl">{entry.place}</p>
-                  <p className="font-mono text-xs mt-1">{entry.stamp}</p>
+                  <p className="font-mono text-xs mt-1 text-dark/50">{entry.stamp}</p>
                 </div>
-                <p className="font-sans text-base max-w-2xl">{entry.story}</p>
+                <p className="font-sans text-base max-w-2xl leading-relaxed">
+                  {entry.story}
+                </p>
               </article>
             ))}
           </div>
         </section>
 
+        {/* RITUALS */}
         <section id="rituals" className="px-8 md:px-16 py-14 md:py-20">
           <div className="whoami-reveal grid grid-cols-1 lg:grid-cols-[0.65fr_1.35fr] gap-8">
             <div>
               <p className="font-mono text-xs mb-3">05 / RITUALS</p>
               <h2 className="font-serif text-4xl md:text-6xl leading-tight">
-                Repeated things that say more than a bio.
+                Repeated behaviors that I've stopped apologizing for.
               </h2>
             </div>
 
@@ -391,7 +449,7 @@ const WhoAmI = () => {
                   >
                     <Icon className="size-7 mb-8" />
                     <p className="font-mono text-xs">{ritual.label}</p>
-                    <p className="font-serif text-3xl leading-tight mt-2">
+                    <p className="font-serif text-2xl md:text-3xl leading-tight mt-2">
                       {ritual.value}
                     </p>
                   </div>
