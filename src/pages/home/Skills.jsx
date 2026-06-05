@@ -8,6 +8,7 @@ import "swiper/css";
 import "swiper/css/free-mode";
 
 // Internal assets
+import whoamiAudio from "../../assets/audo/whoami.mp3";
 import anes from "../../assets/img/anes.jpg";
 import { skills } from "../../assets/skills";
 
@@ -22,7 +23,7 @@ const Skills = forwardRef((props, ref) => {
 
   const { wavesurfer, isPlaying, currentTime } = useWavesurfer({
     container: containerRef,
-    url: "",
+    url: whoamiAudio,
     barWidth: 3,
     barRadius: 4,
     barGap: 3,
@@ -43,6 +44,7 @@ const Skills = forwardRef((props, ref) => {
   const onPlayPause = () => {
     wavesurfer && wavesurfer.playPause();
   };
+
   return (
     <>
 
@@ -74,6 +76,8 @@ const Skills = forwardRef((props, ref) => {
                 <button
                   onClick={onPlayPause}
                   className=" flex items-center justify-center bg-dark p-[8px] rounded-lg hover:bg-blue transition group"
+                  type="button"
+                  aria-label={isPlaying ? "Pause intro audio" : "Play intro audio"}
                 >
                   {isPlaying ? (
                     <Pause size={16} className="text-light-100" />

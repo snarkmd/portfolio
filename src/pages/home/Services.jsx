@@ -1,12 +1,11 @@
 import React, { forwardRef, useState } from "react";
 import { Plus } from "lucide-react";
 import { services } from "../../assets/data";
-import { useSound } from "../../context/soundProvider";
+import { playRandomWindChime } from "../../utils/playWindChime";
 
 // Task 9: converted Services to forwardRef so ScrollReveal can attach a DOM ref safely.
 const Services = forwardRef((props, ref) => {
   const [activeIndex, setActiveIndex] = useState(null);
-  const { playSound } = useSound();
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
@@ -19,7 +18,7 @@ const Services = forwardRef((props, ref) => {
             <div
               className="flex justify-between items-center cursor-pointer p-1 md:p-2 text-xl md:text-2xl font-semibold group"
               onClick={() => toggleAccordion(index)}
-              onMouseEnter={() => playSound(index)}
+              onMouseEnter={playRandomWindChime}
             >
               <h3 className=" font-medium font-mono group-hover:italic max-w-[90%]">
                 {service.title}{" "}
