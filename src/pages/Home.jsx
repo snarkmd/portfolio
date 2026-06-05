@@ -1,0 +1,146 @@
+import Headline from "../components/UI/Headline";
+import Hero from "./home/Hero";
+import Projects from "./home/Projects";
+import ReachMe from "./home/ReachMe";
+import Services from "./home/Services";
+import Skills from "./home/Skills";
+import { useEffect, useRef, useState } from "react";
+import { FloatMenu } from "../components/UI/FloatMenu";
+import { Element } from "react-scroll";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollReveal } from "../context/ScrollReveal";
+gsap.registerPlugin(ScrollTrigger)
+const Home = () => {
+  const floatRef = useRef(null)
+  const sectionRefs = useRef([])
+  const [currentSection, setCurrentSection] = useState(0);
+  const addToRefs = (el) => {
+    if (el && !sectionRefs.current.includes(el)) {
+      sectionRefs.current.push(el);
+    }
+  };
+  useEffect(() => {
+    const float = floatRef.current
+    const sections = sectionRefs.current;
+    if (!float || !sections ) return;
+    gsap.set(float, {opacity:0})
+  const triggers = sections.map((ref, index) => {
+
+      return ScrollTrigger.create({
+        trigger: ref,
+        start: "top 60%",
+        onEnter: () => {
+          setCurrentSection(index)
+          if(index === 0) gsap.to(float, { opacity: 1, duration: 0.4, delay: 0.2, ease: "power2.out",overwrite: "auto", });
+          
+        },
+        onLeaveBack: () => {
+          setCurrentSection(index)
+          if(index === 0) gsap.to(float, { opacity: 0, duration: 0.3, ease: "power2.in",overwrite: "auto" });
+        },
+      });
+
+  });
+  return () => triggers.forEach((trigger) => trigger.kill());
+  }, [])
+  return (
+    <>
+        <div>
+          <FloatMenu floatRef={floatRef} currentSection={currentSection}/>
+          <Hero />
+            <Element name="whoami">
+              <div ref={addToRefs}>
+                <ScrollReveal>
+              <Headline
+                title={
+                  <>
+                    You’<em>re</em> a mosaic <br /> of all the things you{" "}
+                    <em>like</em>.
+                  </>
+                }
+                description={
+                  <>
+                    From pixels to prose, every piece adds up.{" "}
+                    <ins className="text-symbol !w-10"></ins> Here’s how my
+                    skills fit together to create something bigger.
+                  </>
+                }
+              />
+              <Skills />
+              </ScrollReveal>
+              </div>
+              
+              </Element>
+              <Element name="projects">
+                <div ref={addToRefs}>
+              <ScrollReveal>
+                    <Headline
+                                title={
+                                  <>
+                                    Talk <em>is</em> cheap.
+                                    <br /> Here’s the real <em>deal</em>.
+                                  </>
+                                }
+                                description={
+                                  <>
+                                    projects that speak for themselves. Each one shaped by
+                                    curiosity, creativity, and a drive to make things better.
+                                  </>
+                                }
+                              />
+              <Projects/>
+              </ScrollReveal>  
+              
+                </div>
+              </Element>
+              <Element name="services">
+              <div ref={addToRefs}>
+                <ScrollReveal>
+              <Headline
+                title={
+                  <>
+                    Everything <em>is</em> <br /> figureoutable.
+                  </>
+                }
+                description={
+                  <>
+                    Whether it’s building, designing, or strategizing, I turn
+                    challenges into results. Simple as that.
+                  </>
+                }
+              />
+              <Services />
+              </ScrollReveal>
+              </div>
+              </Element>
+              <Element name="reachme">
+              <div ref={addToRefs}>
+                <ScrollReveal>
+              <Headline
+                title={
+                  <>
+                    As you start to <em>walk</em> on the way,
+                    <br /> the way <em>appears</em>.
+                  </>
+                }
+                description={
+                  <>
+                    Got an idea that's itching to come to life? Or maybe you're
+                    looking to team up on something bold and exciting? Let's
+                    make it happen.
+                  </>
+                }
+              />
+              <ReachMe />
+              </ScrollReveal>
+              </div>
+              </Element>
+
+        </div>
+        </>
+
+  );
+};
+
+export default Home;
