@@ -1,3 +1,18 @@
+---
+title: FHIR for Frontend Developers
+category: Tutorials
+type: Guide
+date: 2026-03-12
+readTime: 8 min read
+status: Published
+summary: A practical first pass at reading healthcare resources without getting lost in the specification.
+tags:
+  - FHIR
+  - APIs
+  - health data
+  - interoperability
+---
+
 # FHIR for Frontend Developers
 
 FHIR is a healthcare data standard. The useful mental model is simple: healthcare records are split into resources that reference each other.

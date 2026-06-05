@@ -1,3 +1,18 @@
+---
+title: AI in Clinical Workflows: Guardrails First
+category: AI + Health
+type: Field note
+date: 2026-01-19
+readTime: 5 min read
+status: Draft
+summary: Where AI can help clinicians, where it can harm, and why workflow boundaries matter.
+tags:
+  - AI
+  - clinical workflow
+  - risk
+  - governance
+---
+
 # AI in Clinical Workflows: Guardrails First
 
 AI features in healthcare should be designed around responsibility, not novelty.

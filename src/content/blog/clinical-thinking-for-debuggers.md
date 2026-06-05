@@ -1,3 +1,18 @@
+---
+title: Clinical Thinking for Debuggers
+category: Healthcare x Dev
+type: Article
+date: 2026-05-18
+readTime: 7 min read
+status: Published
+summary: How clinical reasoning maps surprisingly well to debugging complex software systems.
+tags:
+  - clinical reasoning
+  - debugging
+  - systems
+  - diagnosis
+---
+
 # Clinical Thinking for Debuggers
 
 Doctors and developers both spend a lot of time with incomplete information. The difference is mostly vocabulary: one side calls it a differential diagnosis, the other calls it a debugging hypothesis.

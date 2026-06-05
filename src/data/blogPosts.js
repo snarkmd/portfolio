@@ -1,84 +1,101 @@
-import aiClinicalWorkflowsGuardrails from "../content/blog/ai-clinical-workflows-guardrails.md?raw";
-import clinicalThinkingForDebuggers from "../content/blog/clinical-thinking-for-debuggers.md?raw";
-import fhirForFrontendDevelopers from "../content/blog/fhir-for-frontend-developers.md?raw";
-import frontendPatternsForMedicalTools from "../content/blog/frontend-patterns-for-medical-tools.md?raw";
-import observabilityLessonsFromVitalSigns from "../content/blog/observability-lessons-from-vital-signs.md?raw";
+import { BLOG_CATEGORIES, BLOG_TAGS } from "./blogTaxonomy";
 
-const blogPostEntries = [
-  {
-    slug: "clinical-thinking-for-debuggers",
-    title: "Clinical Thinking for Debuggers",
-    category: "Healthcare x Dev",
-    type: "Article",
-    date: "2026-05-18",
-    readTime: "7 min read",
-    status: "Published",
-    summary:
-      "How clinical reasoning maps surprisingly well to debugging complex software systems.",
-    tags: ["clinical reasoning", "debugging", "systems", "diagnosis"],
-    markdown: clinicalThinkingForDebuggers,
-  },
-  {
-    slug: "frontend-patterns-for-medical-tools",
-    title: "Frontend Patterns for Medical Tools",
-    category: "Medical Tech",
-    type: "Tutorial",
-    date: "2026-04-27",
-    readTime: "9 min read",
-    status: "Published",
-    summary:
-      "Practical interface logic for forms, review states, audit trails, and high-stakes user flows.",
-    tags: ["frontend", "forms", "safety", "audit trails"],
-    markdown: frontendPatternsForMedicalTools,
-  },
-  {
-    slug: "fhir-for-frontend-developers",
-    title: "FHIR for Frontend Developers",
-    category: "Tutorials",
-    type: "Guide",
-    date: "2026-03-12",
-    readTime: "8 min read",
-    status: "Published",
-    summary:
-      "A practical first pass at reading healthcare resources without getting lost in the specification.",
-    tags: ["FHIR", "APIs", "health data", "interoperability"],
-    markdown: fhirForFrontendDevelopers,
-  },
-  {
-    slug: "observability-lessons-from-vital-signs",
-    title: "Observability Lessons from Vital Signs",
-    category: "Engineering",
-    type: "Article",
-    date: "2026-02-08",
-    readTime: "6 min read",
-    status: "Published",
-    summary:
-      "Vitals, logs, metrics, and traces all tell partial stories. The value is in how you combine them.",
-    tags: ["observability", "logs", "metrics", "medicine"],
-    markdown: observabilityLessonsFromVitalSigns,
-  },
-  {
-    slug: "ai-clinical-workflows-guardrails",
-    title: "AI in Clinical Workflows: Guardrails First",
-    category: "AI + Health",
-    type: "Field note",
-    date: "2026-01-19",
-    readTime: "5 min read",
-    status: "Draft",
-    summary:
-      "Where AI can help clinicians, where it can harm, and why workflow boundaries matter.",
-    tags: ["AI", "clinical workflow", "risk", "governance"],
-    markdown: aiClinicalWorkflowsGuardrails,
-  },
+const rawBlogPostModules = import.meta.glob("../content/blog/*.md", {
+  eager: true,
+  import: "default",
+  query: "?raw",
+});
+
+const REQUIRED_FIELDS = [
+  "title",
+  "category",
+  "type",
+  "date",
+  "readTime",
+  "status",
+  "summary",
+  "tags",
 ];
 
-export const blogPosts = [...blogPostEntries].sort(
-  (firstPost, secondPost) => new Date(secondPost.date) - new Date(firstPost.date)
-);
+const getSlugFromPath = (filePath) =>
+  filePath
+    .split("/")
+    .pop()
+    .replace(/\.md$/, "");
 
-export const blogCategories = ["All", ...new Set(blogPosts.map((post) => post.category))];
+const parseFrontmatter = (rawMarkdown) => {
+  const match = rawMarkdown.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
 
-export const blogTags = [
-  "All",
-  ...new Set(blogPosts.flatMap((post) => post.tags).sort((a, b) => a.localeCompare(b))),
-];
+  if (!match) {
+    return { metadata: {}, markdown: rawMarkdown.trim() };
+  }
+
+  const [, frontmatter, markdown] = match;
+  const metadata = {};
+  let activeListKey = null;
+
+  frontmatter.split(/\r?\n/).forEach((line) => {
+    if (!line.trim()) return;
+
+    const listItem = line.match(/^\s*-\s+(.*)$/);
+    if (activeListKey && listItem) {
+      metadata[activeListKey].push(listItem[1].trim());
+      return;
+    }
+
+    const field = line.match(/^([A-Za-z][A-Za-z0-9]*):\s*(.*)$/);
+    if (!field) return;
+
+    const [, key, value] = field;
+    if (value === "") {
+      metadata[key] = [];
+      activeListKey = key;
+      return;
+    }
+
+    metadata[key] = value.trim();
+    activeListKey = null;
+  });
+
+  return { metadata, markdown: markdown.trim() };
+};
+
+const validatePostMetadata = (post) => {
+  if (!import.meta.env.DEV) return;
+
+  const missingFields = REQUIRED_FIELDS.filter((field) => {
+    if (field === "tags") return !Array.isArray(post.tags) || post.tags.length === 0;
+    return !post[field];
+  });
+  const invalidTags = post.tags.filter((tag) => !BLOG_TAGS.includes(tag));
+  const warnings = [
+    ...missingFields.map((field) => `missing ${field}`),
+    ...(!BLOG_CATEGORIES.includes(post.category)
+      ? [`unknown category "${post.category}"`]
+      : []),
+    ...invalidTags.map((tag) => `unknown tag "${tag}"`),
+  ];
+
+  if (warnings.length > 0) {
+    console.warn(`[blogPosts] ${post.slug}: ${warnings.join(", ")}`);
+  }
+};
+
+export const blogPosts = Object.entries(rawBlogPostModules)
+  .map(([filePath, rawMarkdown]) => {
+    const { metadata, markdown } = parseFrontmatter(rawMarkdown);
+    const post = {
+      ...metadata,
+      slug: getSlugFromPath(filePath),
+      tags: Array.isArray(metadata.tags) ? metadata.tags : [],
+      markdown,
+    };
+
+    validatePostMetadata(post);
+    return post;
+  })
+  .sort((firstPost, secondPost) => new Date(secondPost.date) - new Date(firstPost.date));
+
+export const blogCategories = ["All", ...BLOG_CATEGORIES];
+
+export const blogTags = ["All", ...BLOG_TAGS];

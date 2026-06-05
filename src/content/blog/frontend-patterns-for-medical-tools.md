@@ -1,3 +1,18 @@
+---
+title: Frontend Patterns for Medical Tools
+category: Medical Tech
+type: Tutorial
+date: 2026-04-27
+readTime: 9 min read
+status: Published
+summary: Practical interface logic for forms, review states, audit trails, and high-stakes user flows.
+tags:
+  - frontend
+  - forms
+  - safety
+  - audit trails
+---
+
 # Frontend Patterns for Medical Tools
 
 Medical software is not normal CRUD. A wrong default, unclear state, or silent failure can create real risk.
